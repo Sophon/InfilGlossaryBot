@@ -4,6 +4,7 @@ import discord
 from discord.ext import commands
 
 TOKEN = 'YOUR_BOT_API_KEY'
+URL = "https://glossary.infil.net/"
 
 
 def get_full_glossary():
@@ -24,11 +25,16 @@ def clean_string(string):
     return transformed_string
 
 
+def add_source(string):
+    return "\n========\n" + "\nsource: " + URL + "?t=" + string.replace(" ", "%20")
+
+
 def search_dictionary(dictionary, term):
     cleaned_input = clean_string(term)
     for item in dictionary:
         if cleaned_input == item["term"]:
-            return item["def"]
+            query = item["def"]
+            return query + add_source(term)
 
     return "Not found"
 
