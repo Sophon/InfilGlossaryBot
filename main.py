@@ -1,5 +1,6 @@
 from urllib.request import urlopen
 import json
+import re
 
 
 def get_full_glossary():
@@ -33,13 +34,13 @@ def read_input():
     return input()
 
 
-term1 = "fireball"
-term2 = "FireBall"
-term3 = "fireBall__"
+def main():
+    glossary = get_full_glossary()
 
-glossary = get_full_glossary()
+    while True:
+        print("write the term: ")
+        output = search_dictionary(glossary, read_input())
+        print(output, "\n")
 
-while True:
-    print("write the term: ")
-    print(search_dictionary(glossary, read_input()))
-    print()
+
+main()
