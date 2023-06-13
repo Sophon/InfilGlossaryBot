@@ -5,6 +5,7 @@ from discord.ext import commands
 
 TOKEN = 'YOUR_BOT_API_KEY'
 URL = "https://glossary.infil.net/"
+GITHUB = "https://github.com/Sophon/InfilGlossaryBot"
 
 
 def get_full_glossary():
@@ -26,7 +27,9 @@ def clean_string(string):
 
 
 def add_source(string):
-    return "\n========\n" + "\nsource: " + URL + "?t=" + string.replace(" ", "%20")
+    return "\n========\n"\
+        + "\nsource: " + "<" + URL + "?t=" + string.replace(" ", "%20") + ">" \
+        + "\nBug reports: " + "<" + GITHUB + ">"
 
 
 def search_dictionary(dictionary, term):
