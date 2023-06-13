@@ -1,6 +1,9 @@
 from urllib.request import urlopen
 import json
-import re
+import discord
+from discord.ext import commands
+
+TOKEN = 'YOUR_BOT_API_KEY'
 
 
 def get_full_glossary():
@@ -30,17 +33,22 @@ def search_dictionary(dictionary, term):
     return "Not found"
 
 
-def read_input():
-    return input()
-
-
 def main():
-    glossary = get_full_glossary()
+    intents = discord.Intents.default()
+    intents.message_content = True
+    bot = commands.Bot(command_prefix='!', intents=intents)
+    my_glossary = get_full_glossary()
 
-    while True:
-        print("write the term: ")
-        output = search_dictionary(glossary, read_input())
-        print(output, "\n")
+    async def on_ready():
+        print(f'Logged in as {bot.user.name}')
+        print('------')
+
+    @bot.command()
+    async def glossary(ctx, *, message):
+        output = search_dictionary(my_glossary, message)
+        await ctx.send(output)
+
+    bot.run(TOKEN)
 
 
 main()
