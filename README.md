@@ -9,6 +9,7 @@ The glossary used: https://glossary.infil.net/
 This bot is still very barebones.
 
 Some TODOs:
+- separate the business logic and the Discord code
 - properly format links
 - clickable links
 - Discord output formatting
