@@ -13,10 +13,6 @@ def main():
     bot = commands.Bot(command_prefix='!', intents=intents, activity=discord.Game(name="!glossary [TERM]"))
     my_glossary = infil_glossary.get_full_glossary()
 
-    async def on_ready():
-        print(f'Logged in as {bot.user.name}')
-        print('------')
-
     @bot.command()
     async def glossary(ctx, *, message):
         output = infil_glossary.search_dictionary(my_glossary, message)
