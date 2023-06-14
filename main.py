@@ -8,7 +8,8 @@ import utils
 
 
 def output_embed(term, glossary, author, avatar):
-    item = infil_glossary.search_dictionary(glossary, utils.remove_tag(term))
+    term = utils.remove_tag(term)
+    item = infil_glossary.search_dictionary(glossary, term)
     return discord_util.create_embed(
         title=term,
         item=item,
