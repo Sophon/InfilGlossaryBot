@@ -2,10 +2,7 @@ from urllib.request import urlopen
 import json
 import discord
 from discord.ext import commands
-
-TOKEN = 'YOUR_BOT_API_KEY'
-URL = "https://glossary.infil.net/"
-GITHUB = "https://github.com/Sophon/InfilGlossaryBot"
+import constants
 
 
 def get_full_glossary():
@@ -28,8 +25,8 @@ def clean_string(string):
 
 def add_source(string):
     return "\n========"\
-        + "\nsource: " + "<" + URL + "?t=" + string.replace(" ", "%20") + ">" \
-        + "\nBug reports: " + "<" + GITHUB + ">"
+        + "\nsource: " + "<" + constants.URL + "?t=" + string.replace(" ", "%20") + ">" \
+        + "\nBug reports: " + "<" + constants.GITHUB + ">"
 
 
 def search_dictionary(dictionary, term):
@@ -57,7 +54,7 @@ def main():
         output = search_dictionary(my_glossary, message)
         await ctx.send(output)
 
-    bot.run(TOKEN)
+    bot.run(constants.TOKEN)
 
 
 main()
