@@ -16,10 +16,10 @@ def main():
 
     @bot.command()
     async def glossary(ctx, *, message):
-        output = infil_glossary.search_dictionary(my_glossary, message)
+        item = infil_glossary.search_dictionary(my_glossary, message)
         embed = discord_util.create_embed(
-            term=message,
-            message=output,
+            title=message,
+            item=item,
             color=discord.Color.blue(),
             author=ctx.author.display_name,
             avatar=ctx.author.avatar.url

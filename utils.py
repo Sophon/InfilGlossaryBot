@@ -1,3 +1,5 @@
+import constants
+
 
 def clean_string(string):
     words = string.split()
@@ -11,3 +13,12 @@ def clean_string(string):
 
 def wrap_link(string):
     return "<" + string + ">"
+
+
+def create_source(searched_term):
+    return "\nSource: " + wrap_link(constants.URL + "?t=" + searched_term.replace(" ", "%20")) \
+        + "\nCode: " + wrap_link(constants.GITHUB)
+
+
+def create_gfycat_link(link_code):
+    return constants.GFYCAT + "/" + link_code
