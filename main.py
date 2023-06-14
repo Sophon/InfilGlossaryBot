@@ -2,6 +2,8 @@ import discord
 from discord.ext import commands
 import infil_glossary
 import constants
+import datetime
+import logger
 
 
 def main():
@@ -23,3 +25,4 @@ def main():
 
 
 main()
+logger.log_call_count_of(function=infil_glossary.search_dictionary, rate=constants.RATE_OF_LOGGING)
