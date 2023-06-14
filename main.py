@@ -17,7 +17,14 @@ def main():
     @bot.command()
     async def glossary(ctx, *, message):
         output = infil_glossary.search_dictionary(my_glossary, message)
-        await ctx.send(embed=discord_util.create_embed(message, output, color=discord.Color.blue()))
+        embed = discord_util.create_embed(
+            term=message,
+            message=output,
+            color=discord.Color.blue(),
+            author=ctx.author.display_name,
+            avatar=ctx.author.avatar.url
+        )
+        await ctx.send(embed=embed)
 
     bot.run(constants.TOKEN)
 
