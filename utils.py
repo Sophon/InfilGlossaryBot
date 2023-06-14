@@ -1,4 +1,5 @@
 import constants
+import re
 
 
 def clean_string(string):
@@ -22,3 +23,7 @@ def create_source(searched_term):
 
 def create_gfycat_link(link_code):
     return constants.GFYCAT + "/" + link_code
+
+
+def remove_tag(string):
+    return re.sub(r'<@(.*?)>', '', string)
