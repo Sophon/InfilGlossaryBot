@@ -2,19 +2,13 @@ import discord
 import utils
 
 
-def create_full_embed(title, item, color, author, avatar):
-    embed = create_lite_embed(title, item, color)
-    embed.set_author(name=author, icon_url=avatar)
-
-    return embed
-
-
-def create_lite_embed(title, item, color):
+def create_embed(title, item, color, author, avatar):
     embed = discord.Embed(
         title=title,
         description=item["def"],
         color=color
     )
+    embed.set_author(name=author, icon_url=avatar)
 
     if 'games' in item:
         embed.add_field(name="Games", value=item["games"], inline=True)
