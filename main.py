@@ -27,7 +27,7 @@ def clean_string(string):
 
 
 def add_source(string):
-    return "\n========\n"\
+    return "\n========"\
         + "\nsource: " + "<" + URL + "?t=" + string.replace(" ", "%20") + ">" \
         + "\nBug reports: " + "<" + GITHUB + ">"
 
@@ -45,7 +45,7 @@ def search_dictionary(dictionary, term):
 def main():
     intents = discord.Intents.default()
     intents.message_content = True
-    bot = commands.Bot(command_prefix='!', intents=intents)
+    bot = commands.Bot(command_prefix='!', intents=intents, activity = discord.Game(name="use !glossary [TERM]"))
     my_glossary = get_full_glossary()
 
     async def on_ready():
