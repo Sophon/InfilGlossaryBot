@@ -4,37 +4,41 @@ import discord
 from discord.ext import commands
 import infil_glossary
 import constants
-import logger
 import discord_util
+import utils
+
+
+async def output(message, glossary):
+    term = utils.remove_tag(message.content)
+    item = infil_glossary.search_dictionary(glossary, term)
+    embed = discord_util.create_embed(
+        title=term,
+        item=item,
+        color=discord.Color.blue(),
+        author=message.author.display_name,
+        avatar=message.author.avatar.url
+    )
+    await message.channel.send(embed=embed)
 
 
 def main():
     intents = discord.Intents.default()
     intents.message_content = True
-    bot = commands.Bot(command_prefix='!', intents=intents, activity=discord.Game(name="!glossary [TERM]"))
+    bot = commands.Bot(
+        command_prefix=commands.when_mentioned,
+        intents=intents,
+        activity=discord.Game(name="@me [TERM]")
+    )
     my_glossary = infil_glossary.get_full_glossary()
 
-    @bot.command()
-    async def glossary(ctx, *, message):
-        item = infil_glossary.search_dictionary(my_glossary, message)
-        embed = discord_util.create_embed(
-            title=message,
-            item=item,
-            color=discord.Color.blue(),
-            author=ctx.author.display_name,
-            avatar=ctx.author.avatar.url
-        )
-        await ctx.send(embed=embed)
+    @bot.event
+    async def on_message(message):
+        user = bot.user
+        if message.author.bot is False and user.mentioned_in(message) and len(message.content) >= len(user.mention) + 1:
+            await output(message, my_glossary)
 
     bot.run(constants.TOKEN)
 
 
-function = infil_glossary.search_dictionary
-rate = constants.RATE_OF_LOGGING_IN_SECONDS
-log_to_file = True
-filename = "log.txt"
-background_thread = threading.Thread(target=logger.log_call_count_of, args=(function, rate, log_to_file, filename,))
-
-background_thread.start()
 main()
 
