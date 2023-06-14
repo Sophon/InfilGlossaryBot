@@ -2,6 +2,7 @@ from urllib.request import urlopen
 import json
 import constants
 import utils
+import logger
 
 
 def get_full_glossary():
@@ -18,6 +19,7 @@ def add_source(string):
         + "\nBug reports: " + utils.wrap_link(constants.GITHUB)
 
 
+@logger.count_calls
 def search_dictionary(dictionary, term):
     cleaned_input = utils.clean_string(term)
     for item in dictionary:
