@@ -5,3 +5,4 @@ URL = "https://glossary.infil.net/"
 GITHUB = "https://github.com/Sophon/InfilGlossaryBot"
 JSON_URL = "https://glossary.infil.net/json/glossary.json"
 RATE_OF_LOGGING_IN_SECONDS = 604800
+GFYCAT = "https://gfycat.com"
