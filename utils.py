@@ -1,5 +1,4 @@
 import constants
-import re
 
 
 def clean_string(string):
@@ -19,11 +18,3 @@ def wrap_link(string):
 def create_source(searched_term):
     return "\nSource: " + wrap_link(constants.URL + "?t=" + searched_term.replace(" ", "%20")) \
         + "\nCode: " + wrap_link(constants.GITHUB)
-
-
-def create_gfycat_link(link_code):
-    return constants.GFYCAT + "/" + link_code
-
-
-def remove_tag(string):
-    return re.sub(r'<@(.*?)>', '', string)
