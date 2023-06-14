@@ -1,52 +1,14 @@
-from urllib.request import urlopen
-import json
 import discord
 from discord.ext import commands
-
-TOKEN = 'YOUR_BOT_API_KEY'
-URL = "https://glossary.infil.net/"
-GITHUB = "https://github.com/Sophon/InfilGlossaryBot"
-
-
-def get_full_glossary():
-    print("DEBUG: getting the glossary\n\n")
-
-    url = "https://glossary.infil.net/json/glossary.json"
-    response = urlopen(url)
-    return json.loads(response.read())
-
-
-def clean_string(string):
-    words = string.split()
-    transformed_words = []
-    for word in words:
-        if word.isalpha():
-            transformed_words.append(word.capitalize())
-    transformed_string = ' '.join(transformed_words)
-    return transformed_string
-
-
-def add_source(string):
-    return "\n========\n"\
-        + "\nsource: " + "<" + URL + "?t=" + string.replace(" ", "%20") + ">" \
-        + "\nBug reports: " + "<" + GITHUB + ">"
-
-
-def search_dictionary(dictionary, term):
-    cleaned_input = clean_string(term)
-    for item in dictionary:
-        if cleaned_input == item["term"]:
-            query = item["def"]
-            return query + add_source(term)
-
-    return "Not found"
+import infil_glossary
+import constants
 
 
 def main():
     intents = discord.Intents.default()
     intents.message_content = True
-    bot = commands.Bot(command_prefix='!', intents=intents)
-    my_glossary = get_full_glossary()
+    bot = commands.Bot(command_prefix='!', intents=intents, activity=discord.Game(name="!glossary [TERM]"))
+    my_glossary = infil_glossary.get_full_glossary()
 
     async def on_ready():
         print(f'Logged in as {bot.user.name}')
@@ -54,10 +16,10 @@ def main():
 
     @bot.command()
     async def glossary(ctx, *, message):
-        output = search_dictionary(my_glossary, message)
+        output = infil_glossary.search_dictionary(my_glossary, message)
         await ctx.send(output)
 
-    bot.run(TOKEN)
+    bot.run(constants.TOKEN)
 
 
 main()
