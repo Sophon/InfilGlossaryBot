@@ -13,8 +13,19 @@ def count_calls(func):
     return wrapper
 
 
-def log_call_count_of(function, rate):
+def write_to_file(output, filename):
+    with open(filename, 'a') as file:
+        file.write(output + "\n")
+        file.close()
+
+
+def log_call_count_of(function, rate, log_to_file=False, filename=""):
+    output = str(function.__closure__[0].cell_contents)
     while True:
-        print(function.__closure__[0].cell_contents)
+        if log_to_file is True:
+            write_to_file(output, filename)
+        else:
+            print("function called " + output + " times")
+
         time.sleep(rate)
 
