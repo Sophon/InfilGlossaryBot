@@ -19,5 +19,9 @@ def search_dictionary(dictionary, term):
     for item in dictionary:
         if cleaned_input == item["term"]:
             return item
+        if 'altterm' in item:
+            for alt in item["altterm"]:
+                if cleaned_input == utils.clean_string(alt):
+                    return item
 
     return "Not found"
