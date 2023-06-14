@@ -7,17 +7,15 @@ import discord_util
 import utils
 
 
-async def output_embed(ctx, term, glossary, author, avatar):
+def output_embed(term, glossary, author, avatar):
     item = infil_glossary.search_dictionary(glossary, utils.remove_tag(term))
-    embed = discord_util.create_embed(
+    return discord_util.create_embed(
         title=term,
         item=item,
         color=discord.Color.blue(),
         author=author,
         avatar=avatar
     )
-
-    await ctx.channel.send(embed=embed)
 
 
 def main():
@@ -43,24 +41,24 @@ def main():
     async def on_message(message):
         user = bot.user
         if message.author.bot is False and user.mentioned_in(message) and len(message.content) >= len(user.mention) + 1:
-            await output_embed(
-                ctx=message,
+            embed = output_embed(
                 term=message.content,
                 glossary=my_glossary,
                 author=message.author.display_name,
                 avatar=message.author.avatar.url
             )
+            await message.channel.send(embed=embed)
 
     @bot.tree.command(name="glossary")
     @app_commands.describe(term="term to search")
     async def glossary(interaction: discord.Interaction, term: str):
-        await output_embed(
-            ctx=interaction,
+        embed = output_embed(
             term=term,
             glossary=my_glossary,
             author=interaction.user.display_name,
             avatar=interaction.user.avatar.url
         )
+        await interaction.response.send_message(embed=embed)
 
     bot.run(constants.TOKEN)
 
