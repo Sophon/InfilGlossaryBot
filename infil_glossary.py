@@ -1,6 +1,7 @@
 from urllib.request import urlopen
 import json
 import constants
+import utils
 
 
 def get_full_glossary():
@@ -11,24 +12,14 @@ def get_full_glossary():
     return json.loads(response.read())
 
 
-def clean_string(string):
-    words = string.split()
-    transformed_words = []
-    for word in words:
-        if word.isalpha():
-            transformed_words.append(word.capitalize())
-    transformed_string = ' '.join(transformed_words)
-    return transformed_string
-
-
 def add_source(string):
     return "\n========"\
-        + "\nsource: " + "<" + constants.URL + "?t=" + string.replace(" ", "%20") + ">" \
-        + "\nBug reports: " + "<" + constants.GITHUB + ">"
+        + "\nsource: " + utils.wrap_link(constants.URL + "?t=" + string.replace(" ", "%20")) \
+        + "\nBug reports: " + utils.wrap_link(constants.GITHUB)
 
 
 def search_dictionary(dictionary, term):
-    cleaned_input = clean_string(term)
+    cleaned_input = utils.clean_string(term)
     for item in dictionary:
         if cleaned_input == item["term"]:
             query = item["def"]
