@@ -24,7 +24,6 @@ def search_dictionary(dictionary, term):
     cleaned_input = utils.clean_string(term)
     for item in dictionary:
         if cleaned_input == item["term"]:
-            query = item["def"]
-            return query + add_source(term)
+            return item
 
     return "Not found"
