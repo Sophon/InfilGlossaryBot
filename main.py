@@ -5,6 +5,7 @@ from discord.ext import commands
 import infil_glossary
 import constants
 import logger
+import discord_util
 
 
 def main():
@@ -16,7 +17,7 @@ def main():
     @bot.command()
     async def glossary(ctx, *, message):
         output = infil_glossary.search_dictionary(my_glossary, message)
-        await ctx.send(output)
+        await ctx.send(embed=discord_util.create_embed(message, output, color=discord.Color.blue()))
 
     bot.run(constants.TOKEN)
 
