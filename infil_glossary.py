@@ -13,7 +13,6 @@ def get_full_glossary():
     return json.loads(response.read())
 
 
-@logger.count_calls
 def search_dictionary(dictionary, term):
     cleaned_input = utils.clean_string(term)
     for item in dictionary:
