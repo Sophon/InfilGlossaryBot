@@ -1,7 +1,8 @@
 from urllib.request import urlopen
 import json
 import constants
-import utils_string
+import utils
+import logger
 
 
 def get_full_glossary():
@@ -12,14 +13,15 @@ def get_full_glossary():
     return json.loads(response.read())
 
 
+@logger.count_calls
 def search_dictionary(dictionary, term):
-    cleaned_input = utils_string.clean_string(term)
+    cleaned_input = utils.clean_string(term)
     for item in dictionary:
         if cleaned_input == item["term"]:
             return item
         if 'altterm' in item:
             for alt in item["altterm"]:
-                if cleaned_input == utils_string.clean_string(alt):
+                if cleaned_input == utils.clean_string(alt):
                     return item
 
     return "Not found"
