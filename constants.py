@@ -1,6 +1,9 @@
 import os
+from dotenv import load_dotenv, find_dotenv
 
-TOKEN = 'YOUR_BOT_API_KEY'
+load_dotenv(find_dotenv())
+
+TOKEN = os.getenv("DEV_TOKEN")
 URL = "https://glossary.infil.net/"
 GITHUB = "https://github.com/Sophon/InfilGlossaryBot"
 JSON_URL = "https://glossary.infil.net/json/glossary.json"
