@@ -10,13 +10,21 @@ def create_embed(query, author="", avatar=""):
     term = utils.remove_mention_tag(query)
     print("searching for:" + term)
     item = infil_glossary.search_dictionary(my_glossary, term)
-    description, tags = utils.search_and_replace(item["def"])
+    if item == "Not found":
+        embed = discord.Embed(
+            title=term,
+            description=item,
+            color=discord.Color.blue()
+        )
+        tags = []
+    else:
+        description, tags = utils.search_and_replace(item["def"])
+        embed = discord.Embed(
+            title=term,
+            description=description,
+            color=discord.Color.blue()
+        )
 
-    embed = discord.Embed(
-        title=term,
-        description=description,
-        color=discord.Color.blue()
-    )
     embed.set_author(name=author, icon_url=avatar)
 
     if 'games' in item:
