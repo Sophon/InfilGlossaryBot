@@ -46,7 +46,7 @@ class DiscordClient(discord.Client):
             item = infil_glossary.search_dictionary(self.__my_glossary, term)
 
             embed = self.__create_embed(
-                title=message.content,
+                title=term,
                 item=item,
                 color=discord.Color.blue(),
                 author=message.author.display_name,
