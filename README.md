@@ -4,11 +4,6 @@ A Discord bot that searches the fighting-game glossary.
 
 The glossary used: https://glossary.infil.net/
 
-![CleanShot 2023-06-15 at 00 35 53](https://github.com/Sophon/InfilGlossaryBot/assets/9089332/b4aa214b-224e-499b-bad9-3ab6653da50e)
+![glossary-infil-demo](https://github.com/Sophon/InfilGlossaryBot/assets/9089332/3e3cc56d-a6ef-4636-b7a3-9ab5fbb7b9fe)
 
 
-
-Basic functionality works, some nice-to-heave features still missing:
-- properly format link-tags
-- clickable links
-- JP definitions
