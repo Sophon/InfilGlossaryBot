@@ -1,11 +1,14 @@
 import discord
 import string_utils
+from discord.ext import commands
 
 
 def create_embed(title, item, color, author, avatar):
+    tags, string = string_utils.search_and_replace(item["def"])
+
     embed = discord.Embed(
         title=title,
-        description=item["def"],
+        description=string,
         color=color
     )
     embed.set_author(name=author, icon_url=avatar)
@@ -22,7 +25,14 @@ def create_embed(title, item, color, author, avatar):
 
     embed.add_field(name="Source", value=string_utils.create_source(searched_term=title), inline=False)
 
-    return embed
+    return embed, create_action_row_from_tags(tags)
 
+
+def create_action_row_from_tags(tags):
+    buttons = []
+    for tag in tags:
+        buttons.append(discord.ui.Button(label=tag))
+
+    return buttons
 
 

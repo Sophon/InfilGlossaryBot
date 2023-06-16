@@ -5,6 +5,7 @@ import infil_glossary
 import constants
 import discord_util
 import string_utils
+import discord_client
 
 
 def output_embed(term, glossary, author, avatar):
@@ -38,31 +39,54 @@ def main():
         except Exception as e:
             print(e)
 
+    # TAG COMMAND
     @bot.event
     async def on_message(message):
         user = bot.user
         if message.author.bot is False and user.mentioned_in(message) and len(message.content) >= len(user.mention) + 1:
-            embed = output_embed(
+            embed, action_row = output_embed(
                 term=message.content,
                 glossary=my_glossary,
                 author=message.author.display_name,
                 avatar=message.author.avatar.url
             )
-            await message.channel.send(embed=embed)
+            await message.channel.send(embed=embed, components=action_row)
 
+    # SLASH COMMAND
     @bot.tree.command(name="glossary")
     @app_commands.describe(term="term to search")
     async def glossary(interaction: discord.Interaction, term: str):
-        embed = output_embed(
+        embed, action_row = output_embed(
             term=term,
             glossary=my_glossary,
             author=interaction.user.display_name,
             avatar=interaction.user.avatar.url
         )
-        await interaction.response.send_message(embed=embed)
+        await interaction.response.send_message(embed=embed, components=action_row)
 
     bot.run(constants.TOKEN)
 
 
-main()
+def main_2():
+    intents = discord.Intents.default()
+    client = discord_client.DiscordClient(
+        command_prefix=commands.when_mentioned,
+        intents=intents,
+        activity=discord.Game(name="@me [TERM]")
+    )
 
+    @client.tree.command(name="glossary")
+    @app_commands.describe(term="term to search")
+    async def glossary(interaction: discord.Interaction, term: str):
+        embed = client.embed_from_interaction(
+            query=term,
+            author_name=interaction.user.display_name,
+            author_avatar=interaction.user.avatar.url
+        )
+
+        await interaction.response.send_message(embed=embed)
+
+    client.run(constants.TOKEN)
+
+
+main_2()

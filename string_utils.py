@@ -29,8 +29,27 @@ def remove_mention_tag(string):
     return re.sub(r'<@(.*?)>', '', string)
 
 
-def take_first_element(string):
-    elements = re.findall(r"'([^']*)'", string)
+def get_all_substrings(string, delim):
+    substrings = []
+    start_index = 0
+    while True:
+        start_index = string.find(delim, start_index)
+        if start_index == -1:
+            break
+        end_index = string.find(delim, start_index + 1)
+        if end_index == -1:
+            break
+        substrings.append(string[start_index + 1:end_index])
+        start_index = end_index + 1
+    return substrings
 
-    return elements[0]
 
+def search_and_replace(string):
+    regex_pattern = r'!<.*?>'
+    matches = re.findall(regex_pattern, string)
+    occurrences = []
+    for match in matches:
+        tag = get_all_substrings(match[2:-1], "'")[-1]
+        occurrences.append(tag)
+        string = string.replace(match, tag)
+    return string, occurrences
