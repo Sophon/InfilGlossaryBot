@@ -4,11 +4,11 @@ from discord.ext import commands
 import infil_glossary
 import constants
 import discord_util
-import utils
+import string_utils
 
 
 def output_embed(term, glossary, author, avatar):
-    term = utils.remove_tag(term)
+    term = string_utils.remove_mention_tag(term)
     item = infil_glossary.search_dictionary(glossary, term)
     return discord_util.create_embed(
         title=term,

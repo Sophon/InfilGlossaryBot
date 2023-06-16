@@ -1,5 +1,5 @@
 import discord
-import utils
+import string_utils
 
 
 def create_embed(title, item, color, author, avatar):
@@ -17,10 +17,10 @@ def create_embed(title, item, color, author, avatar):
         embed.add_field(name="Synonyms", value=item["altterm"], inline=True)
 
     if 'video' in item:
-        link = utils.create_gfycat_link(item["video"][0])
-        embed.add_field(name="Gif", value=utils.wrap_link(link), inline=False)
+        link = string_utils.create_gfycat_link(item["video"][0])
+        embed.add_field(name="Gif", value=string_utils.wrap_link(link), inline=False)
 
-    embed.add_field(name="Source", value=utils.create_source(searched_term=title), inline=False)
+    embed.add_field(name="Source", value=string_utils.create_source(searched_term=title), inline=False)
 
     return embed
 

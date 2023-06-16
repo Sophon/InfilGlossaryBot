@@ -25,5 +25,12 @@ def create_gfycat_link(link_code):
     return constants.GFYCAT + "/" + link_code
 
 
-def remove_tag(string):
+def remove_mention_tag(string):
     return re.sub(r'<@(.*?)>', '', string)
+
+
+def take_first_element(string):
+    elements = re.findall(r"'([^']*)'", string)
+
+    return elements[0]
+
