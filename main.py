@@ -3,7 +3,6 @@ from discord import app_commands
 from discord.ext import commands
 import infil_glossary
 import constants
-import discord_util
 import utils
 
 
@@ -48,6 +47,7 @@ async def on_ready():
             print(f"Synced {len(synced)} command(s)")
         except Exception as e:
             print(e)
+
 
 # TAG TRIGGER
 @bot.event
