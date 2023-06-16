@@ -30,23 +30,36 @@ def create_embed(title, description, item, author, avatar):
 
 
 my_glossary = infil_glossary.get_full_glossary()
-intents = discord.Intents.default()
-intents.message_content = True
-bot = commands.Bot(
-    command_prefix=commands.when_mentioned,
-    intents=intents,
-    activity=discord.Game(name="@me [TERM]")
-)
 
 
-@bot.event
-async def on_ready():
-        print(f"Bot is ready. Logged in as {bot.user.name}")
+class ButtonsView(discord.ui.View):
+    def __init__(self, labels: []):
+        super().__init__()
+
+        for label in labels:
+            self.add_item(discord.ui.Button(label=label, style=discord.ButtonStyle.primary))
+
+
+class Bot(commands.Bot):
+    def __init__(self):
+        intents = discord.Intents.default()
+        intents.message_content = True
+        super().__init__(
+            command_prefix=commands.when_mentioned,
+            intents=intents,
+            activity=discord.Game(name="@me [TERM]")
+        )
+
+    async def on_ready(self):
+        print(f"Bot is ready. Logged in as {self.user.name}")
         try:
-            synced = await bot.tree.sync()
+            synced = await self.tree.sync()
             print(f"Synced {len(synced)} command(s)")
         except Exception as e:
             print(e)
+
+
+bot = Bot()
 
 
 # TAG TRIGGER
@@ -66,7 +79,7 @@ async def on_message(message):
             avatar=message.author.avatar.url
         )
 
-        await message.channel.send(embed=embed)
+        await message.channel.send(embed=embed, view=ButtonsView(tags))
 
 
 # SLASH TRIGGER
@@ -87,7 +100,5 @@ async def glossary(interaction: discord.Interaction, query: str):
 
     await interaction.response.send_message(embed=embed)
 
+
 bot.run(constants.TOKEN)
-
-
-
