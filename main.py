@@ -6,9 +6,13 @@ import constants
 import utils
 
 
-def create_embed(title, description, item, author, avatar):
+def create_embed(query, author, avatar):
+    term = utils.remove_mention_tag(query)
+    item = infil_glossary.search_dictionary(my_glossary, term)
+    description, tags = utils.search_and_replace(item["def"])
+
     embed = discord.Embed(
-        title=title,
+        title=term,
         description=description,
         color=discord.Color.blue()
     )
@@ -24,9 +28,9 @@ def create_embed(title, description, item, author, avatar):
         link = utils.create_gfycat_link(item["video"][0])
         embed.add_field(name="Gif", value=utils.wrap_link(link), inline=False)
 
-    embed.add_field(name="Source", value=utils.create_source(searched_term=title), inline=False)
+    embed.add_field(name="Source", value=utils.create_source(searched_term=term), inline=False)
 
-    return embed
+    return embed, tags
 
 
 my_glossary = infil_glossary.get_full_glossary()
@@ -67,14 +71,8 @@ bot = Bot()
 async def on_message(message):
     user = bot.user
     if message.author.bot is False and user.mentioned_in(message) and len(message.content) >= len(user.mention) + 1:
-        term = utils.remove_mention_tag(message.content)
-        item = infil_glossary.search_dictionary(my_glossary, term)
-        description, tags = utils.search_and_replace(item["def"])
-
-        embed = create_embed(
-            title=term,
-            description=description,
-            item=item,
+        embed, tags = create_embed(
+            query=message.content,
             author=message.author.display_name,
             avatar=message.author.avatar.url
         )
@@ -86,19 +84,13 @@ async def on_message(message):
 @bot.tree.command(name="glossary")
 @app_commands.describe(query="term to search")
 async def glossary(interaction: discord.Interaction, query: str):
-    term = utils.remove_mention_tag(query)
-    item = infil_glossary.search_dictionary(my_glossary, term)
-    description, tags = utils.search_and_replace(item["def"])
-
-    embed = create_embed(
-        title=term,
-        description=description,
-        item=item,
+    embed, tags = create_embed(
+        query=query,
         author=interaction.user.display_name,
         avatar=interaction.user.avatar.url
     )
 
-    await interaction.response.send_message(embed=embed)
+    await interaction.response.send_message(embed=embed, view=ButtonsView(tags))
 
 
 bot.run(constants.TOKEN)
