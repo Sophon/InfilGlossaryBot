@@ -6,8 +6,9 @@ import constants
 import utils
 
 
-def create_embed(query, author, avatar):
+def create_embed(query, author="", avatar=""):
     term = utils.remove_mention_tag(query)
+    print("searching for:" + term)
     item = infil_glossary.search_dictionary(my_glossary, term)
     description, tags = utils.search_and_replace(item["def"])
 
@@ -36,12 +37,25 @@ def create_embed(query, author, avatar):
 my_glossary = infil_glossary.get_full_glossary()
 
 
+class MyButton(discord.ui.Button):
+    def __init__(self, label):
+        super().__init__(label=label, style=discord.ButtonStyle.primary)
+
+    async def callback(self, interaction: discord.Interaction):
+        embed, tags = create_embed(
+            query=self.label,
+            author=interaction.user.display_name,
+            avatar=interaction.user.avatar.url
+        )
+
+        await interaction.response.send_message(embed=embed, view=ButtonsView(tags))
+
+
 class ButtonsView(discord.ui.View):
     def __init__(self, labels: []):
         super().__init__()
-
         for label in labels:
-            self.add_item(discord.ui.Button(label=label, style=discord.ButtonStyle.primary))
+            self.add_item(MyButton(label=label))
 
 
 class Bot(commands.Bot):
